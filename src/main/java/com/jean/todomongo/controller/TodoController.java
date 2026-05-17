@@ -1,7 +1,9 @@
 package com.jean.todomongo.controller;
 
 import com.jean.todomongo.model.Todo;
+import com.jean.todomongo.model.dto.CreateTodoRequest;
 import com.jean.todomongo.service.TodoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +18,12 @@ public class TodoController {
     private final TodoService todoService;
 
     @PostMapping
-    public Todo create(@RequestBody Todo todo) {
-        return todoService.create(todo);
+        public Todo create(@Valid @RequestBody CreateTodoRequest request) {
+        Todo todo = Todo.builder()
+                .title(request.title())
+                .completed(false)
+                .build();
+            return todoService.create(todo);
     }
 
     @GetMapping
