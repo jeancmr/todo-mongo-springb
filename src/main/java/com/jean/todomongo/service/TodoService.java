@@ -2,7 +2,9 @@ package com.jean.todomongo.service;
 
 
 import com.jean.todomongo.model.Todo;
+import com.jean.todomongo.model.dto.UpdateTodoRequest;
 import com.jean.todomongo.repository.TodoRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +24,17 @@ public class TodoService {
         return todoRepository.findAll();
     }
 
-    public Todo toggle(String id) {
-
+    public Todo update(String id, @Valid UpdateTodoRequest request) {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow();
 
-        todo.setCompleted(!todo.isCompleted());
+        if (request.title() != null) {
+            todo.setTitle(request.title());
+        }
+
+        if (request.completed() != null) {
+            todo.setCompleted(request.completed());
+        }
 
         return todoRepository.save(todo);
     }
@@ -35,4 +42,6 @@ public class TodoService {
     public void delete(String id) {
         todoRepository.deleteById(id);
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.jean.todomongo.controller;
 
 import com.jean.todomongo.model.Todo;
 import com.jean.todomongo.model.dto.CreateTodoRequest;
+import com.jean.todomongo.model.dto.UpdateTodoRequest;
 import com.jean.todomongo.service.TodoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,12 @@ public class TodoController {
         return todoService.getAll();
     }
 
-    @PatchMapping("/{id}/toggle")
-    public Todo toggle(@PathVariable String id) {
-        return todoService.toggle(id);
+    @PatchMapping("/{id}")
+    public Todo update(
+            @PathVariable String id,
+            @Valid @RequestBody UpdateTodoRequest request
+    ) {
+        return todoService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
